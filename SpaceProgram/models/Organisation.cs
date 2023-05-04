@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpaceTravelBooking.Application.models
+namespace SpaceProgram.Application.models
 {
     [Table("Organisation")]
     public class Organisation

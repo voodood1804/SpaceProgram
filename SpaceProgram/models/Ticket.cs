@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpaceTravelBooking.Application.models
+namespace SpaceProgram.Application.models
 {
     public enum PriorityLevel { Economy, EconomyPlus, Business, BusinessPlus, First}
     [Table("Ticket")]

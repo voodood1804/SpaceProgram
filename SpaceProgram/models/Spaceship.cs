@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpaceTravelBooking.Application.models
+namespace SpaceProgram.Application.models
 {
     [Table("Spaceship")]
     public class Spaceship

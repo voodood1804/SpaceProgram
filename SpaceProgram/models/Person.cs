@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
-using SpaceTravelBooking.Application.models;
+using SpaceProgram.Application.models;
 
-namespace SpaceTravelBooking.Application.models
+namespace SpaceProgram.Application.models
 {
+    public record class PlanetAddress(string Planet, string State, string City);
     [Table("Person")]
     public class Person
     {
-        public Person(string firstName, string lastName, int ssn, DateTime birthDate, Address address, string tel, string email) 
+        public Person(string firstName, string lastName, int ssn, DateTime birthDate, PlanetAddress address, string tel, string email) 
         {
             Guid = Guid.NewGuid();
             FirstName = firstName;
@@ -39,7 +41,7 @@ namespace SpaceTravelBooking.Application.models
         [MaxLength(64)]
         public int SSN { get; set; }
         public DateTime BirthDate { get; set; }
-        public Address Address { get; set; }
+        public PlanetAddress Address { get; set; }
         public string Tel { get; set; }
         [MaxLength(64)]
         public string Email { get; set; }
