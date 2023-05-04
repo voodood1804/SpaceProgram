@@ -54,12 +54,12 @@ namespace SpaceProgram.Application.models
             return _tickets.Count; 
         }
 
-        public void ConfirmTicket(Ticket t, DateTime paymentDate, string paymentMethod)
+        public void ConfirmTicket(Ticket t, DateTime paymentDate, Paymentmethod paymentmethod)
         {
-            if (t is ConfirmTicket)
+            if (t is ConfirmedTicket)
                 return;
 
-            var confirmedTicket = new ConfirmedTicket(t, paymentDate, paymentMethod);
+            var confirmedTicket = new ConfirmedTicket(t, paymentDate, paymentmethod);
             _tickets.Remove(t);
             _tickets.Add(confirmedTicket);
         }
