@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlightBooking.Test
+namespace SpaceProgram.Test
 {
     public class DatabaseTest : IDisposable
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SpaceProgram.Application.infrastructure;
 
-namespace FlightBooking.Test
+namespace SpaceProgram.Test
 {
     [Collection("Sequential")]
     public class SpaceContextTests
