@@ -20,32 +20,42 @@ public class SpaceContext : DbContext
     public DbSet<Producer> Producers => Set<Producer>();
     public DbSet<Spaceship> Spaceships => Set<Spaceship>();
     public DbSet<Ticket> Tickets => Set<Ticket>();
+    public DbSet<SpaceStation> Spacestations => Set<SpaceStation>();
+    public DbSet<SolarSystem> SolarSystems => Set<SolarSystem>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<models.Person>().OwnsOne(p => p.Address);
-        modelBuilder.Entity<models.Flight>().OwnsOne(f2 => f2.ArrivalAddress);
-        modelBuilder.Entity<models.Flight>().OwnsOne(f2 => f2.DepartureAddress);
 
         modelBuilder.Entity<Ticket>().HasAlternateKey(t => t.Guid);
         modelBuilder.Entity<Ticket>().Property(t => t.Guid).ValueGeneratedOnAdd();
 
         modelBuilder.Entity<Ticket>().HasDiscriminator(t => t.BookingType);
         modelBuilder.Entity<models.Person>().HasDiscriminator(p => p.PersonType);
+
+        modelBuilder.Entity<Flight>()
+        .HasOne(f => f.DepartureAddress)
+        .WithMany()
+        .HasForeignKey(f => f.DepartureAddressId);
+
+        modelBuilder.Entity<Flight>()
+            .HasOne(f => f.ArrivalAddress)
+            .WithMany()
+            .HasForeignKey(f => f.ArrivalAddressId);
     }
 
     public void Seed()
     {
         Randomizer.Seed = new Random(1337);
 
-        var producer = new Faker<Producer>("AUT").CustomInstantiator(pd => new Producer(
+        var producer = new Faker<Producer>("de").CustomInstantiator(pd => new Producer(
             name: pd.Vehicle.Manufacturer()))
             .Generate(15)
             .ToList();
         Producers.AddRange(producer);
         SaveChanges();
 
-        var passenger = new Faker<Passenger>("AUT").CustomInstantiator(p => new Passenger(new models.Person(
+        var passenger = new Faker<Passenger>("de").CustomInstantiator(p => new Passenger(new models.Person(
             firstName: p.Person.FirstName,
             lastName: p.Person.LastName,
             ssn: p.Random.Int(100000000, 99999999),
@@ -58,14 +68,14 @@ public class SpaceContext : DbContext
         Persons.AddRange(passenger);
         SaveChanges();
 
-        var organisation = new Faker<Organisation>("AUT").CustomInstantiator(o => new Organisation(
+        var organisation = new Faker<Organisation>("de").CustomInstantiator(o => new Organisation(
             name: o.Company.CompanyName()))
             .Generate(15)
             .ToList();
         Organisations.AddRange(organisation);
         SaveChanges();
 
-        var spaceship = new Faker<Spaceship>("AUT").CustomInstantiator(s => new Spaceship(
+        var spaceship = new Faker<Spaceship>("de").CustomInstantiator(s => new Spaceship(
             name: s.Vehicle.Model(),
             producer: s.Random.ListItem(producer),
             seats: s.Random.Int(100000, 199999),
@@ -75,21 +85,45 @@ public class SpaceContext : DbContext
         Spaceships.AddRange(spaceship);
         SaveChanges();
 
-        var flight = new Faker<Flight>("AUT").CustomInstantiator(f => new Flight(
+        var solarsystem = new Faker<SolarSystem>("de").CustomInstantiator(sy => new SolarSystem(
+            name: sy.Address.Country(),
+            dangerLevel: sy.PickRandom<DangerLevel>()
+            ))
+            .Generate(20)
+            .ToList();
+        SolarSystems.AddRange(solarsystem);
+        SaveChanges();
+
+        var spacestation = new Faker<SpaceStation>("de").CustomInstantiator(sp => new SpaceStation(
+            solarsystem: sp.Random.ListItem(solarsystem),
+            name: sp.Company.CompanyName(),
+            longitude: sp.Random.Int(100000000, 999999999),
+            latitude: sp.Random.Int(100000000, 999999999),
+            height: sp.Random.Int(100000000, 999999999),
+            neglongitude: sp.Random.Int(-100000000, -999999999),
+            neglatitude: sp.Random.Int(-100000000, -999999999),
+            negheight: sp.Random.Int(-100000000, -999999999)
+            ))
+            .Generate(20)
+            .ToList();
+        Spacestations.AddRange(spacestation);
+        SaveChanges();
+
+        var flight = new Faker<Flight>("de").CustomInstantiator(f => new Flight(
             departureTime: f.Person.DateOfBirth,
             arrivalTime: f.Person.DateOfBirth,
             destinationTime: f.Person.DateOfBirth,
             spaceship: f.Random.ListItem(spaceship),
             organisation: f.Random.ListItem(organisation),
-            departureAddress: new StationAddress(f.Random.Int(100000, 999999), f.Address.City()),
-            arrivalAddress: new StationAddress(f.Random.Int(100000, 999999), f.Address.City()),
+            spaceStation: f.Random.ListItem(spacestation),
+            arrivalAddress: f.Random.ListItem(spacestation),
             isActive: f.Random.Bool()))
             .Generate(10)
             .ToList();
         Flights.AddRange(flight);
         SaveChanges();
 
-        var crew = new Faker<Crew>("AUT").CustomInstantiator(c => new Crew(new models.Person(
+        var crew = new Faker<Crew>("de").CustomInstantiator(c => new Crew(new models.Person(
             firstName: c.Person.FirstName,
             lastName: c.Person.LastName,
             ssn: c.Random.Int(100000000, 99999999),

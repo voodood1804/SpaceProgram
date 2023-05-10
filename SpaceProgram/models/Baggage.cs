@@ -11,11 +11,9 @@ namespace SpaceProgram.Application.models
     [Table("Baggage")]
     public class Baggage
     {
-        public Baggage(Person person, double weight, decimal price)
+        public Baggage(string name, double weight, decimal price)
         {
-            Person = person;
-            PersonFirstname = person.FirstName;
-            PersonLastname = person.LastName;
+            Name = name;
             Weight = weight;
             Price = price;
         }
@@ -26,9 +24,7 @@ namespace SpaceProgram.Application.models
 
         public int Id { get; private set; }
         [MaxLength(64)]
-        public Person Person { get; set; }
-        public string PersonFirstname { get; set; }
-        public string PersonLastname { get; set; }
+        public string Name { get; set; }
         public double Weight { get; set; }
         public decimal Price { get; set; }
     }
