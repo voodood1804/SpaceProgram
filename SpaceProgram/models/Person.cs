@@ -11,7 +11,7 @@ using SpaceProgram.Application.models;
 
 namespace SpaceProgram.Application.models
 {
-    public record class PlanetAddress(string Planet, string State, string City);
+    public record PlanetAddress(string Planet, string State, string City);
     [Table("Person")]
     public class Person
     {
