@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace SpaceProgram.Test
 {
-    internal class PassengerTests
+    public class PassengerTests
     {
+
     }
 }

@@ -10,7 +10,9 @@ namespace SpaceProgram.Application.models
     [Table("Flight")]
     public class Flight
     {
-        public Flight(DateTime departureTime, DateTime arrivalTime, DateTime destinationTime, Spaceship spaceship, Organisation organisation, SpaceStation spaceStation, SpaceStation arrivalAddress, bool isActive) 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        public Flight(DateTime departureTime, DateTime arrivalTime, DateTime destinationTime, Spaceship spaceship, Organisation organisation, SpaceStation spaceStation, SpaceStation arrivalAddress, bool isActive)
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
             DepartureTime = departureTime;
             ArrivalTime = arrivalTime;
@@ -18,9 +20,11 @@ namespace SpaceProgram.Application.models
             Spaceship = spaceship;
             SpaceshipId = spaceship.Id;
             Organisation = organisation;
-            OrganisationName = organisation.Name;
+            OrganisationId = organisation.Id;
+            SpaceStationDepature = spaceStation;
             DepartureAddressId = spaceStation.Id;
-            ArrivalAddressId = spaceStation.Id;
+            SpaceStationArrival = spaceStation;
+            ArrivalAddressId = arrivalAddress.Id;
             IsActive = isActive;
         }
 
@@ -36,10 +40,10 @@ namespace SpaceProgram.Application.models
         public virtual Spaceship Spaceship { get; set; }
         public int SpaceshipId { get; set; }
         public virtual Organisation Organisation { get; set; }
-        public string OrganisationName { get; set; }
-        public virtual SpaceStation DepartureAddress { get; set; }
+        public int OrganisationId { get; set; }
+        public virtual SpaceStation SpaceStationArrival { get; set; }
         public int DepartureAddressId { get; set; }
-        public virtual SpaceStation ArrivalAddress { get; set; }
+        public virtual SpaceStation SpaceStationDepature { get; set; }
         public int ArrivalAddressId { get; set; }
 
         public bool IsActive { get; set; }

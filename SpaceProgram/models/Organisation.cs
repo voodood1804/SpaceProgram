@@ -13,11 +13,12 @@ namespace SpaceProgram.Application.models
     {
         public Organisation(string name)
         {
+
             Name = name;
         }
 
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int Id { get; private set; }
+        [MaxLength(64)]
         public string Name { get; set; }
     }
 }

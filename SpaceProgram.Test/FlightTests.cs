@@ -27,13 +27,40 @@ namespace SpaceProgram.Test
             var organisation1 = new Organisation(name: "Imperium");
             _db.Organisations.Add(organisation1);
             _db.SaveChanges();
+            var solarsystem1 = new SolarSystem(dangerLevel: DangerLevel.Moderate,
+                                               name: "EwokSystem");
+            var solarsystem2 = new SolarSystem(dangerLevel: DangerLevel.Low,
+                                               name: "NabooSystem");
+            _db.SolarSystems.Add(solarsystem1);
+            _db.SolarSystems.Add(solarsystem2);
+            _db.SaveChanges();
+            var spacestation1 = new SpaceStation(solarsystem: solarsystem1,
+                                                 name: "EwokStation",
+                                                 longitude: 1000000,
+                                                 latitude: 53250,
+                                                 height: 0,
+                                                 neglongitude: 0,
+                                                 neglatitude: 0,
+                                                 negheight: -324698);
+
+            var spacestation2 = new SpaceStation(solarsystem: solarsystem1,
+                                                 name: "NabooStation",
+                                                 longitude: 0,
+                                                 latitude: 0,
+                                                 height: 0,
+                                                 neglongitude: -325436,
+                                                 neglatitude: -435269,
+                                                 negheight: -35893);
+            _db.Spacestations.Add(spacestation1);
+            _db.Spacestations.Add(spacestation2);
+            _db.SaveChanges();
             var flight1 = new Flight(departureTime: new DateTime(2023, 5, 15),
                                     arrivalTime: new DateTime(2023, 5, 17),
                                     destinationTime: new DateTime(2023, 5, 16),
                                     spaceship: spaceship1,
                                     organisation: organisation1,
-                                    departureAddress: new StationAddress(42, "PegasusSystem"),
-                                    arrivalAddress: new StationAddress(1, "ErdSystem"),
+                                    spaceStation: spacestation1,
+                                    arrivalAddress: spacestation2,
                                     isActive: true);
             flight1.ChangeStatus(false);
             _db.Flights.Add(flight1);

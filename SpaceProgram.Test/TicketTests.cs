@@ -17,7 +17,7 @@ namespace SpaceProgram.Test
             var person1 = new Passenger(new Person(firstName: "Lukas",
                                                    lastName: "Hammerschmid",
                                                    ssn: 23535423,
-                                                   birthDate: new DateTime(2003, 18, 4),
+                                                   birthDate: new DateTime(2003, 4, 18),
                                                    address: new PlanetAddress("Nowhere", "Infinty", "Stone"),
                                                    tel: "066023135",
                                                    email: "lukas.testmail@gmail.com"));
@@ -35,13 +35,40 @@ namespace SpaceProgram.Test
             var organisation1 = new Organisation(name: "Widerstand");
             _db.Organisations.Add(organisation1);
             _db.SaveChanges();
-            var flight1 = new Flight(departureTime: new DateTime(2023, 5, 15),
-                                    arrivalTime: new DateTime(2023, 5, 17),
-                                    destinationTime: new DateTime(2023, 5, 16),
+            var solarsystem1 = new SolarSystem(dangerLevel: DangerLevel.Moderate,
+                                               name: "VulcanerSystem");
+            var solarsystem2 = new SolarSystem(dangerLevel: DangerLevel.Low,
+                                               name: "ErdSystem");
+            _db.SolarSystems.Add(solarsystem1);
+            _db.SolarSystems.Add(solarsystem2);
+            _db.SaveChanges();
+            var spacestation1 = new SpaceStation(solarsystem: solarsystem1,
+                                                 name: "VulcanStation",
+                                                 longitude: 1000,
+                                                 latitude: 50,
+                                                 height: 80000000,
+                                                 neglongitude: 0,
+                                                 neglatitude: 0,
+                                                 negheight: 0);
+
+            var spacestation2 = new SpaceStation(solarsystem: solarsystem1,
+                                                 name: "ErdStation",
+                                                 longitude: 0,
+                                                 latitude: 0,
+                                                 height: 5,
+                                                 neglongitude: 0,
+                                                 neglatitude: 0,
+                                                 negheight: 0);
+            _db.Spacestations.Add(spacestation1);
+            _db.Spacestations.Add(spacestation2);
+            _db.SaveChanges();
+            var flight1 = new Flight(departureTime: new DateTime(2023, 5, 10),
+                                    arrivalTime: new DateTime(2023, 5, 12),
+                                    destinationTime: new DateTime(2023, 5, 11),
                                     spaceship: spaceship1,
                                     organisation: organisation1,
-                                    departureAddress: new StationAddress(42, "VulcanerSystem"),
-                                    arrivalAddress: new StationAddress(1, "AtlantisSystem"),
+                                    spaceStation: spacestation1,
+                                    arrivalAddress: spacestation2,
                                     isActive: true);
             _db.Flights.Add(flight1);
             _db.SaveChanges();
@@ -51,7 +78,7 @@ namespace SpaceProgram.Test
                                      price: 999);
             _db.Tickets.Add(ticket1);
             _db.SaveChanges();
-            var baggage1 = new Baggage(person1, 50.21, 40);
+            var baggage1 = new Baggage(person1.LastName, 50.21, 40);
             _db.Baggeges.Add(baggage1);
             _db.SaveChanges();
             var confiremedticket1 = new ConfirmedTicket(ticket: ticket1, paymentDate: new DateTime(2023, 10, 5), paymentmethod: Paymentmethod.PayPal);
@@ -64,7 +91,7 @@ namespace SpaceProgram.Test
         {
             var bg1 = _db.Tickets.First();
             var p1 = _db.Persons.First();
-            var b1 = new Baggage(p1, 1000, 500);
+            var b1 = new Baggage("School Books", 1000, 500);
 
             Action testAddAction = () => bg1.AddBaggage(b1);
             Assert.Throws<ArgumentException>(testAddAction);

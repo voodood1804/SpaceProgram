@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using SpaceProgram.Application.models;
 using Bogus.DataSets;
+using Microsoft.Extensions.Options;
 
 namespace SpaceProgram.Application.infrastructure;
 public class SpaceContext : DbContext
@@ -23,6 +24,7 @@ public class SpaceContext : DbContext
     public DbSet<SpaceStation> Spacestations => Set<SpaceStation>();
     public DbSet<SolarSystem> SolarSystems => Set<SolarSystem>();
 
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<models.Person>().OwnsOne(p => p.Address);
@@ -34,12 +36,12 @@ public class SpaceContext : DbContext
         modelBuilder.Entity<models.Person>().HasDiscriminator(p => p.PersonType);
 
         modelBuilder.Entity<Flight>()
-        .HasOne(f => f.DepartureAddress)
+        .HasOne(f => f.SpaceStationDepature)
         .WithMany()
         .HasForeignKey(f => f.DepartureAddressId);
 
         modelBuilder.Entity<Flight>()
-            .HasOne(f => f.ArrivalAddress)
+            .HasOne(f => f.SpaceStationArrival)
             .WithMany()
             .HasForeignKey(f => f.ArrivalAddressId);
     }
@@ -48,9 +50,9 @@ public class SpaceContext : DbContext
     {
         Randomizer.Seed = new Random(1337);
 
-        var producer = new Faker<Producer>("de").CustomInstantiator(pd => new Producer(
+        var producer = new Faker<Producer>("en").CustomInstantiator(pd => new Producer(
             name: pd.Vehicle.Manufacturer()))
-            .Generate(15)
+            .Generate(5)
             .ToList();
         Producers.AddRange(producer);
         SaveChanges();
@@ -100,9 +102,9 @@ public class SpaceContext : DbContext
             longitude: sp.Random.Int(100000000, 999999999),
             latitude: sp.Random.Int(100000000, 999999999),
             height: sp.Random.Int(100000000, 999999999),
-            neglongitude: sp.Random.Int(-100000000, -999999999),
-            neglatitude: sp.Random.Int(-100000000, -999999999),
-            negheight: sp.Random.Int(-100000000, -999999999)
+            neglongitude: sp.Random.Int(-100000000, -9999999),
+            neglatitude: sp.Random.Int(-100000000, -999999),
+            negheight: sp.Random.Int(-100000000, -999999)
             ))
             .Generate(20)
             .ToList();
