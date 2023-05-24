@@ -13,7 +13,7 @@ namespace SpaceProgram.Test
         public TicketTests() 
         {
             _db.Database.EnsureCreated();
-            _db.Database.EnsureDeleted();
+            //_db.Database.EnsureDeleted();
             var person1 = new Passenger(new Person(firstName: "Lukas",
                                                    lastName: "Hammerschmid",
                                                    ssn: 23535423,
@@ -23,18 +23,22 @@ namespace SpaceProgram.Test
                                                    email: "lukas.testmail@gmail.com"));
             _db.Persons.Add(person1);
             _db.SaveChanges();
+
             var producer1 = new Producer(name: "Omega");
             _db.Producers.Add(producer1);
             _db.SaveChanges();
+
             var spaceship1 = new Spaceship(name: "X-wing",
                                           producer: producer1,
                                           seats: 100,
                                           maxBaggageWeight: 100);
             _db.Spaceships.Add(spaceship1);
             _db.SaveChanges();
+
             var organisation1 = new Organisation(name: "Widerstand");
             _db.Organisations.Add(organisation1);
             _db.SaveChanges();
+
             var solarsystem1 = new SolarSystem(dangerLevel: DangerLevel.Moderate,
                                                name: "VulcanerSystem");
             var solarsystem2 = new SolarSystem(dangerLevel: DangerLevel.Low,
@@ -42,6 +46,7 @@ namespace SpaceProgram.Test
             _db.SolarSystems.Add(solarsystem1);
             _db.SolarSystems.Add(solarsystem2);
             _db.SaveChanges();
+
             var spacestation1 = new SpaceStation(solarsystem: solarsystem1,
                                                  name: "VulcanStation",
                                                  longitude: 1000,
@@ -62,6 +67,7 @@ namespace SpaceProgram.Test
             _db.Spacestations.Add(spacestation1);
             _db.Spacestations.Add(spacestation2);
             _db.SaveChanges();
+
             var flight1 = new Flight(departureTime: new DateTime(2023, 5, 10),
                                     arrivalTime: new DateTime(2023, 5, 12),
                                     destinationTime: new DateTime(2023, 5, 11),
@@ -72,16 +78,22 @@ namespace SpaceProgram.Test
                                     isActive: true);
             _db.Flights.Add(flight1);
             _db.SaveChanges();
+
             var ticket1 = new Ticket(flight: flight1,
+                                     passenger: person1,
                                      seatNumber: "AB42",
                                      PriorityLevel.BusinessPlus,
                                      price: 999);
             _db.Tickets.Add(ticket1);
             _db.SaveChanges();
+
             var baggage1 = new Baggage(person1.LastName, 50.21, 40);
             _db.Baggeges.Add(baggage1);
+
             _db.SaveChanges();
-            var confiremedticket1 = new ConfirmedTicket(ticket: ticket1, paymentDate: new DateTime(2023, 10, 5), paymentmethod: Paymentmethod.PayPal);
+            var confiremedticket1 = new ConfirmedTicket(ticket: ticket1,
+                                                        paymentDate: new DateTime(2023, 10, 5),
+                                                        paymentmethod: Paymentmethod.PayPal);
             confiremedticket1.AddBaggage(baggage1);
             person1.BuyTicket(confiremedticket1);
             _db.SaveChanges();

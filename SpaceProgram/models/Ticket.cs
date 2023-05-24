@@ -14,9 +14,9 @@ namespace SpaceProgram.Application.models
     {
         private PriorityLevel _priorityLevel;
 
-        public Ticket(Flight flight, string seatNumber, PriorityLevel priorityLevel, decimal price) 
+        public Ticket(Flight flight, Passenger passenger, string seatNumber, PriorityLevel priorityLevel, decimal price) 
         {
-            Passenger = default!;
+            Passenger = passenger;
             Flight = flight;
             FlightId = flight.Id;
             SeatNumber = seatNumber;
