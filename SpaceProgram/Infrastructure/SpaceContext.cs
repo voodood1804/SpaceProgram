@@ -139,6 +139,11 @@ public class SpaceContext : DbContext
             .ToList();
         Persons.AddRange(crew);
         SaveChanges();
+
+        //var baggage = new Faker<Baggage>("de").CustomInstantiator(b => new Baggage(
+        //    name: b.Person.FirstName,
+        //    weight: b.Random.Int(0, 70),
+        //    price: b.Random.Int(50, 100))).Generate(2)
     }
 
 }

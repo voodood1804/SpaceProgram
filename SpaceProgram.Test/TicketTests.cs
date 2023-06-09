@@ -79,22 +79,25 @@ namespace SpaceProgram.Test
             _db.Flights.Add(flight1);
             _db.SaveChanges();
 
-            var ticket1 = new Ticket(flight: flight1,
-                                     passenger: person1,
-                                     seatNumber: "AB42",
-                                     PriorityLevel.BusinessPlus,
-                                     price: 999);
-            _db.Tickets.Add(ticket1);
-            _db.SaveChanges();
+
 
             var baggage1 = new Baggage(person1.LastName, 50.21, 40);
             _db.Baggeges.Add(baggage1);
+            var baggage2 = new Baggage(person1.LastName, 40, 30);
+            _db.Baggeges.Add(baggage2);
 
-            _db.SaveChanges();
-            var confiremedticket1 = new ConfirmedTicket(ticket: ticket1,
+            var confiremedticket1 = new ConfirmedTicket(ticket: new Ticket(
+                                                         flight: flight1,
+                                                         passenger: person1,
+                                                         seatNumber: "AB42",
+                                                         PriorityLevel.BusinessPlus,
+                                                         price: 999),
                                                         paymentDate: new DateTime(2023, 10, 5),
                                                         paymentmethod: Paymentmethod.PayPal);
+
             confiremedticket1.AddBaggage(baggage1);
+            confiremedticket1.AddBaggage(baggage2);
+            _db.SaveChanges();
             person1.BuyTicket(confiremedticket1);
             _db.SaveChanges();
         }
@@ -116,7 +119,7 @@ namespace SpaceProgram.Test
         [Fact]
         public void CalcTotalPriceSuccess()
         {
-            Assert.Equal(1039, _db.confirmedTickets.First().CalculateTotalPrice());
+            Assert.Equal(1069, _db.confirmedTickets.First().CalculateTotalPrice());
         }
     }
 }

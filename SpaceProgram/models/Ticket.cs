@@ -61,7 +61,7 @@ namespace SpaceProgram.Application.models
         {
             if (baggage != null)
             {
-                if (baggage.Weight > 0 && baggage.Weight <= this.Flight.Spaceship.MaxBaggageWeight)
+                if (baggage.Weight > 0 && baggage.Weight < this.Flight.Spaceship.MaxBaggageWeight)
                 {
                     _baggages.Add(baggage);
                 }
