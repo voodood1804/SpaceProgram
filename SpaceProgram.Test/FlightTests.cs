@@ -38,19 +38,19 @@ namespace SpaceProgram.Test
                                                  name: "EwokStation",
                                                  longitude: 1000000,
                                                  latitude: 53250,
-                                                 height: 0,
+                                                 height: 100,
                                                  neglongitude: 0,
                                                  neglatitude: 0,
-                                                 negheight: -324698);
+                                                 negheight: 0);
 
             var spacestation2 = new SpaceStation(solarsystem: solarsystem1,
                                                  name: "NabooStation",
                                                  longitude: 0,
                                                  latitude: 0,
-                                                 height: 0,
+                                                 height: 200,
                                                  neglongitude: -325436,
                                                  neglatitude: -435269,
-                                                 negheight: -35893);
+                                                 negheight: 0);
             _db.Spacestations.Add(spacestation1);
             _db.Spacestations.Add(spacestation2);
             _db.SaveChanges();
@@ -71,6 +71,12 @@ namespace SpaceProgram.Test
         public void ChangeStatus()
         {
             Assert.True(_db.Flights.First().IsActive == false);
+        }
+
+        [Fact]
+        public void calcDiff()
+        {
+            Assert.Equal(100, _db.Flights.First().heightdiff());
         }
     }
 }

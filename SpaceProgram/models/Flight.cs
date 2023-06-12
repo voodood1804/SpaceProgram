@@ -23,7 +23,7 @@ namespace SpaceProgram.Application.models
             OrganisationId = organisation.Id;
             SpaceStationDepature = spaceStation;
             DepartureAddressId = spaceStation.Id;
-            SpaceStationArrival = spaceStation;
+            SpaceStationArrival = arrivalAddress;
             ArrivalAddressId = arrivalAddress.Id;
             IsActive = isActive;
         }
@@ -50,6 +50,19 @@ namespace SpaceProgram.Application.models
         public void ChangeStatus(bool isActive)
         {
             IsActive = isActive;
+        }
+
+        public decimal heightdiff()
+        {
+            if(SpaceStationDepature.Height > SpaceStationArrival.Height)
+            {
+                return SpaceStationDepature.Height - SpaceStationArrival.Height;
+            }
+            else
+            {
+                return SpaceStationArrival.Height - SpaceStationDepature.Height;
+            }
+
         }
     }
 }
